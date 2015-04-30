@@ -1,0 +1,25 @@
+all:
+  
+  selenium1:
+    scheme: http
+    host: 127.0.0.1
+    port: 4444
+    path: wd/hub
+  
+  selenium2:
+    scheme: http
+    host: 127.0.0.1
+    port: 4444
+    path: wd/hub
+
+  selenium3:
+    scheme: http
+    host: 127.0.0.1
+    port: 4444
+    path: wd/hub
+
+  selenium4:
+    scheme: http
+    host: 127.0.0.1
+    port: 4444
+    path: wd/hub

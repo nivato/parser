@@ -1,0 +1,25 @@
+all:
+  
+  baltbet:
+    scheme: http
+    host: baltbet.ru
+    browser: firefox
+    remoteSelenium: false
+  
+  dev:
+    scheme: http
+    host: development.com
+    browser: chrome
+    remoteSelenium: false
+
+  test:
+    scheme: http
+    host: test.com
+    browser: ie
+    remoteSelenium: selenium1
+
+  prod:
+    scheme: http
+    host: production.com
+    browser: opera
+    remoteSelenium: selenium2
