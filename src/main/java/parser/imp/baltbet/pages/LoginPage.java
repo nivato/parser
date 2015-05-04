@@ -11,10 +11,8 @@ import parser.core.web.elements.TextInput;
 
 public class LoginPage extends WebPage<LoginPage>{
 
-	private static final String PAGE_URL = BASE_URL + "/access/login";
-	
-	public LoginPage(WebDriver driver) {
-		super(driver);
+	public LoginPage(WebDriver driver, String url) {
+		super(driver, url);
 	}
 
 	@Override
@@ -30,11 +28,11 @@ public class LoginPage extends WebPage<LoginPage>{
 				getLoginButton().isAvailable();
 	}
 	
-	public AdminHomePage loginUser(String username, String password) {
+	public BaltBetPage loginUser(String username, String password) {
 		getUsernameInput().inputText(username);
 		getPasswordInput().inputText(password);
 		getLoginButton().click();
-		return new AdminHomePage(driver).waitUntilAvailable();
+		return new BaltBetPage(driver, null).waitUntilAvailable();
 	}
 	
 	private TextInput getUsernameInput() {

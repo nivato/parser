@@ -1,6 +1,7 @@
 package parser.imp.baltbet;
 
 import parser.core.Parser;
+import parser.imp.baltbet.pages.BaltBetPage;
 
 public class BaltBetParser extends Parser{
 	
@@ -11,8 +12,9 @@ public class BaltBetParser extends Parser{
 	
 	@Override
 	public void parse() {
-		driver.get(settings.scheme + "://" + settings.host);
-		try{Thread.sleep(10000);} catch(Exception e){}
+		BaltBetPage page = new BaltBetPage(driver, settings.scheme + "://" + settings.host);
+		page.loadAndWaitUntilAvailable();
+		page.printAllEvents();
 	}
 
 }

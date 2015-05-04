@@ -13,13 +13,8 @@ import parser.core.web.elements.TextInput;
 
 public class CreateNewUserPage extends WebPage<CreateNewUserPage>{
 	
-	public CreateNewUserPage(WebDriver driver) {
-		super(driver);
-	}
-
-	@Override
-	public CreateNewUserPage load() {
-		throw new RuntimeException("CreateNewUserPage cannot be loaded");
+	public CreateNewUserPage(WebDriver driver, String url) {
+		super(driver, url);
 	}
 
 	@Override

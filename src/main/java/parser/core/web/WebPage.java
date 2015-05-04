@@ -1,22 +1,24 @@
 package parser.core.web;
 
-import static parser.core.config.Configuration.getEnvironmentSettings;
-
 import org.openqa.selenium.WebDriver;
-
-import parser.core.config.Environment;
 
 public abstract class WebPage<T extends WebPage<T>> extends Component<T>{
 	
-	protected static String enironmentKey;
-	protected static final Environment SETTINGS = getEnvironmentSettings(enironmentKey);
-	protected static final String BASE_URL = SETTINGS.scheme + "://" + SETTINGS.host;
+	protected final String PAGE_URL;
 	
-	public WebPage(WebDriver driver) {
+	public WebPage(WebDriver driver, String url) {
 		super(driver);
+		PAGE_URL = url;
 	}
 
-	public abstract T load();
+	public T load(){
+		if (PAGE_URL == null || PAGE_URL.equals("")){
+			driver.quit();
+			throw new RuntimeException(this.getClass().getSimpleName() + " page cannot be loaded!");
+		}
+		driver.get(PAGE_URL);
+		return (T) this;
+	};
 	
 	public T loadAndWaitUntilAvailable() {
         T page = load();

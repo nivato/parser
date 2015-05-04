@@ -9,8 +9,8 @@ import parser.core.web.elements.Button;
 
 public class ManageUsersPage extends WebPage<ManageUsersPage>{
 	
-	public ManageUsersPage(WebDriver driver) {
-		super(driver);
+	public ManageUsersPage(WebDriver driver, String url) {
+		super(driver, url);
 	}
 
 	@Override
@@ -25,7 +25,7 @@ public class ManageUsersPage extends WebPage<ManageUsersPage>{
 	
 	public CreateNewUserPage goToCreateNewUserPage() {
 		getAddNewUserButton().click();
-		return new CreateNewUserPage(driver).waitUntilAvailable();
+		return new CreateNewUserPage(driver, null).waitUntilAvailable();
 	}
 	
 	private Button getAddNewUserButton() {
