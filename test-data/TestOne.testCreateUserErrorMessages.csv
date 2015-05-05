@@ -1,7 +1,0 @@
-admin_username,admin_password,username,password,password_confirmation,first_name,last_lame,email,error_message
-nazar_ivato,secret_word,some_user,abcd1234,abcd,Some,User,someuser@gmail.com,Password doesn't match confirmation
-nazar_ivato,secret_word,,abcd1234,abcd1234,Some,User,someuser@gmail.com,Username is too short (minimum is 8 characters)
-nazar_ivato,secret_word,nazar_ivato,abcd1234,abcd1234,Some,User,someuser@gmail.com,Username has already been taken
-nazar_ivato,secret_word,some_user,abcd1234,abcd1234,,User,someuser@gmail.com,First name can't be blank
-nazar_ivato,secret_word,some_user,abcd1234,abcd1234,Some,,someuser@gmail.com,Last name can't be blank
-nazar_ivato,secret_word,some_user,abcd1234,abcd1234,Some,User,abcd,Email is invalid

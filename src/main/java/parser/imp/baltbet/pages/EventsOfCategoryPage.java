@@ -13,6 +13,7 @@ import org.openqa.selenium.WebElement;
 
 import parser.core.web.elements.Text;
 import parser.imp.baltbet.elements.EventsTable;
+import parser.imp.baltbet.elements.EventsTableRow;
 
 public class EventsOfCategoryPage extends BaltBetPage<EventsOfCategoryPage>{
 	
@@ -33,14 +34,23 @@ public class EventsOfCategoryPage extends BaltBetPage<EventsOfCategoryPage>{
 		try {
 			return super.waitUntilAvailable();
 		} catch (TimeoutException e){
+			driver.navigate().refresh();
 			clickCategoryLink(categoryName);
 			return waitUntilAvailable();
 		}
 	}
 	
-	public void printEventTableNames(){
-		for (String key: getEventTablesMap().keySet()){
-			System.out.println("EVENTS TABLE: " + key);
+	public void printEventTables(){
+		for (Map.Entry<String, EventsTable> entry: getEventTablesMap().entrySet()){
+		    String name = entry.getKey();
+		    EventsTable table = entry.getValue();
+		    System.out.println("===========================================================================================");
+		    System.out.println("EVENTS TABLE: " + name);
+		    System.out.println("===========================================================================================");
+		    for (EventsTableRow row: table.getEventRows()){
+		    	row.printCells();
+		    	System.out.println("    ---------------------------------------------------------------------------------------");
+		    }
 		}
 	}
 	
