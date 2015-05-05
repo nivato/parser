@@ -1,6 +1,7 @@
 package parser.core.web.elements;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -14,6 +15,11 @@ public class Link extends WebComponent<Link>{
 	
 	public Link(WebDriver driver, WebElement cachedWebElement) {
 		super(driver, cachedWebElement);
+	}
+	
+	public void callScriptInHref(){
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript(getAttribute("href").replace("javascript:", ""));
 	}
 	
 }

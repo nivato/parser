@@ -16,10 +16,15 @@ public abstract class Parser {
 	protected abstract String enironmentKey();
 	protected abstract void parse();
 	
-	public void start(){
-		this.setUp();
-		this.parse();
-		this.tearDown();
+	public void start() throws Exception{
+		setUp();
+		try {
+			parse();
+		} catch (Exception e){
+			tearDown();
+			throw e;
+		}
+		tearDown();
 	}
 	
 	protected void setUp(){

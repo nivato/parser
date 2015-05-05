@@ -13,7 +13,6 @@ public abstract class WebPage<T extends WebPage<T>> extends Component<T>{
 
 	public T load(){
 		if (PAGE_URL == null || PAGE_URL.equals("")){
-			driver.quit();
 			throw new RuntimeException(this.getClass().getSimpleName() + " page cannot be loaded!");
 		}
 		driver.get(PAGE_URL);

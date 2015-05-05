@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 
 public abstract class WebComponent<T extends WebComponent<T>> extends Component<T>{
 
@@ -35,8 +36,17 @@ public abstract class WebComponent<T extends WebComponent<T>> extends Component<
 		getWebElement().click();
 	}
 	
+	public void emulateClick(){
+		Actions action = new Actions(driver);
+		action.moveToElement(getWebElement()).click().build().perform();
+	}
+	
 	public String getText(){
 		return getWebElement().getText();
+	}
+	
+	public String getAttribute(String attributeName){
+		return getWebElement().getAttribute(attributeName);
 	}
 	
 	protected WebElement getWebElement() {

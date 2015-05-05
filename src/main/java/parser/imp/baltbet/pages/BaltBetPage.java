@@ -2,7 +2,6 @@ package parser.imp.baltbet.pages;
 
 import static org.openqa.selenium.By.className;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -10,9 +9,9 @@ import org.openqa.selenium.WebDriver;
 
 import parser.core.web.WebPage;
 import parser.core.web.elements.Link;
-import parser.imp.baltbet.elements.EventList;
+import parser.imp.baltbet.elements.EventCategoryList;
 
-public class BaltBetPage extends WebPage<BaltBetPage>{
+public abstract class BaltBetPage<T extends BaltBetPage<T>> extends WebPage<T>{
 
 	public BaltBetPage(WebDriver driver, String url) {
 		super(driver, url);
@@ -20,25 +19,31 @@ public class BaltBetPage extends WebPage<BaltBetPage>{
 
 	@Override
 	public boolean isAvailable() {
-		return getEventListElement().isAvailable();
+		return getEventCategoryListElement().isAvailable();
 	}
 	
 	public void printAllEvents(){
-		EventList listElement = getEventListElement();
-		for (Map.Entry<String, Link> entry: listElement.getEventLinks().entrySet()){
+		EventCategoryList listElement = getEventCategoryListElement();
+		for (Map.Entry<String, Link> entry: listElement.getCategoryLinks().entrySet()){
 		    String key = entry.getKey();
 		    Link value = entry.getValue();
 		    System.out.println("EVENT: " + key);
 		}
 	}
 	
-	public Set<String> getEventsSet(){
-		Map<String, Link> eventLinks = getEventListElement().getEventLinks();
-		return eventLinks.keySet();
+	public Set<String> getEventCategories(){
+		Map<String, Link> categoryLinks = getEventCategoryListElement().getCategoryLinks();
+		return categoryLinks.keySet();
 	}
 	
-	private EventList getEventListElement(){
-		return new EventList(driver, className("allbet"));
+	public EventsOfCategoryPage goToEventsPage(String categoryName){
+		Link categoryLink = getEventCategoryListElement().getCategoryLinks().get(categoryName);
+		categoryLink.emulateClick();
+		return new EventsOfCategoryPage(driver, categoryName).waitUntilAvailable();
+	}
+	
+	private EventCategoryList getEventCategoryListElement(){
+		return new EventCategoryList(driver, className("allbet")).waitUntilAvailable();
 	}
 	
 }

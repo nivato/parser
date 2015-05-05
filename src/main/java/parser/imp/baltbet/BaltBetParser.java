@@ -1,7 +1,7 @@
 package parser.imp.baltbet;
 
 import parser.core.Parser;
-import parser.imp.baltbet.pages.BaltBetPage;
+import parser.imp.baltbet.pages.HomePage;
 
 public class BaltBetParser extends Parser{
 	
@@ -12,9 +12,9 @@ public class BaltBetParser extends Parser{
 	
 	@Override
 	public void parse() {
-		BaltBetPage page = new BaltBetPage(driver, settings.scheme + "://" + settings.host);
+		HomePage page = new HomePage(driver, settings.scheme + "://" + settings.host);
 		page.loadAndWaitUntilAvailable();
-		page.printAllEvents();
+		page.goToEventsPage("Футбол").printEventTableNames();
 	}
 
 }
