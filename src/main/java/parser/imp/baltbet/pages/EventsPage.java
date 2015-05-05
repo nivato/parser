@@ -2,10 +2,18 @@ package parser.imp.baltbet.pages;
 
 import static org.openqa.selenium.By.xpath;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.xalan.templates.ElemApplyImport;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
+import org.jsoup.parser.Parser;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
@@ -14,12 +22,13 @@ import org.openqa.selenium.WebElement;
 import parser.core.web.elements.Text;
 import parser.imp.baltbet.elements.EventsTable;
 import parser.imp.baltbet.elements.EventsTableRow;
+import parser.imp.baltbet.jsoup.JsoupEventsTable;
 
-public class EventsOfCategoryPage extends BaltBetPage<EventsOfCategoryPage>{
+public class EventsPage extends BaltBetPage<EventsPage>{
 	
 	protected String categoryName;
 	
-	public EventsOfCategoryPage(WebDriver driver, String categoryName) {
+	public EventsPage(WebDriver driver, String categoryName) {
 		super(driver, null);
 		this.categoryName = categoryName;
 	}
@@ -30,7 +39,7 @@ public class EventsOfCategoryPage extends BaltBetPage<EventsOfCategoryPage>{
 	}
 	
 	@Override
-	public EventsOfCategoryPage waitUntilAvailable(){
+	public EventsPage waitUntilAvailable(){
 		try {
 			return super.waitUntilAvailable();
 		} catch (TimeoutException e){
@@ -38,6 +47,22 @@ public class EventsOfCategoryPage extends BaltBetPage<EventsOfCategoryPage>{
 			clickCategoryLink(categoryName);
 			return waitUntilAvailable();
 		}
+	}
+	
+	public void parseHtml(){
+		for (JsoupEventsTable table: getEventsTableList()){
+			System.out.println(table.getEventsTitle());
+		}
+	}
+	
+	public List<JsoupEventsTable> getEventsTableList(){
+		List<JsoupEventsTable> list = new ArrayList<JsoupEventsTable>();
+		Document document = Jsoup.parse(driver.findElement(xpath("id('livediv')")).getAttribute("innerHTML"));
+		Iterator<Element> elements = document.getElementsByTag("table").iterator();
+		while (elements.hasNext()){
+			list.add(new JsoupEventsTable(elements.next()));
+		}
+		return list;
 	}
 	
 	public void printEventTables(){

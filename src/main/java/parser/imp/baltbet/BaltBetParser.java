@@ -14,7 +14,7 @@ public class BaltBetParser extends Parser{
 	public void parse() {
 		HomePage page = new HomePage(driver, settings.scheme + "://" + settings.host);
 		page.loadAndWaitUntilAvailable();
-		page.goToEventsPage("Футбол").printEventTables();
+		page.goToEventsPage("Футбол").parseHtml();//printEventTables();
 	}
 
 }
