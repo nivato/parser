@@ -41,6 +41,11 @@ public abstract class WebComponent<T extends WebComponent<T>> extends Component<
 		action.moveToElement(getWebElement()).click().build().perform();
 	}
 	
+	public void emulateMouseOver(){
+		Actions action = new Actions(driver);
+		action.moveToElement(getWebElement()).build().perform();
+	}
+	
 	public String getText(){
 		return getWebElement().getText();
 	}

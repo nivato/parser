@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -23,8 +25,17 @@ public class EventsOfCategoryPage extends BaltBetPage<EventsOfCategoryPage>{
 
 	@Override
 	public boolean isAvailable() {
-		return getEventsTitleElement().waitUntilAvailable().getText().equals("Предстоящие события: " + this.categoryName)
-				&& super.isAvailable();
+		return getEventsTitleElement().getText().equals("Предстоящие события: " + this.categoryName);
+	}
+	
+	@Override
+	public EventsOfCategoryPage waitUntilAvailable(){
+		try {
+			return super.waitUntilAvailable();
+		} catch (TimeoutException e){
+			clickCategoryLink(categoryName);
+			return waitUntilAvailable();
+		}
 	}
 	
 	public void printEventTableNames(){
@@ -36,9 +47,15 @@ public class EventsOfCategoryPage extends BaltBetPage<EventsOfCategoryPage>{
 	private Map<String, EventsTable> getEventTablesMap(){
 		Map<String, EventsTable> map = new HashMap<String, EventsTable>();
 		List<WebElement> tableElements = driver.findElements(xpath("id('livediv')/table"));
-		for (WebElement element: tableElements){
-			EventsTable table = new EventsTable(driver, element, categoryName);
-			map.put(table.getTableName(), table);
+		try {
+			for (WebElement element: tableElements){
+				EventsTable table = new EventsTable(driver, element, categoryName);
+				map.put(table.getTableName(), table);
+			}
+		} catch (StaleElementReferenceException e){
+			clickCategoryLink(categoryName);
+			waitUntilAvailable();
+			map = getEventTablesMap();
 		}
 		return map;
 	}

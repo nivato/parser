@@ -32,15 +32,14 @@ public class Wait<T extends Component<T>> {
 	public T toBeAvailable() {
 		int timePassed = 0;
 		while (timePassed < timeoutInMillis){
-			if (this.component.isAvailable()){
-				return this.component;
-			}
+			try {
+				if (this.component.isAvailable()){
+					return this.component;
+				}
+			} catch (Exception e){}
 			timePassed = timePassed + delay();
 		}
-		if (!this.component.isAvailable()){
-			throw new TimeoutException("Timed out after " + timeoutInMillis + " ms. waiting for " + this.component.getClass().getSimpleName() + " component to be available.");
-		}
-		return this.component;
+		throw new TimeoutException("Timed out after " + timeoutInMillis + " ms. waiting for " + this.component.getClass().getSimpleName() + " component to be available.");
 	}
 	
 	private int delay(){

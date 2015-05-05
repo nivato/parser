@@ -37,9 +37,13 @@ public abstract class BaltBetPage<T extends BaltBetPage<T>> extends WebPage<T>{
 	}
 	
 	public EventsOfCategoryPage goToEventsPage(String categoryName){
+		clickCategoryLink(categoryName);
+		return new EventsOfCategoryPage(driver, categoryName).waitUntilAvailable();
+	}
+	
+	protected void clickCategoryLink(String categoryName){
 		Link categoryLink = getEventCategoryListElement().getCategoryLinks().get(categoryName);
 		categoryLink.emulateClick();
-		return new EventsOfCategoryPage(driver, categoryName).waitUntilAvailable();
 	}
 	
 	private EventCategoryList getEventCategoryListElement(){
