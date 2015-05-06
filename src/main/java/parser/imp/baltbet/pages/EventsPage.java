@@ -1,6 +1,7 @@
 package parser.imp.baltbet.pages;
 
 import static org.openqa.selenium.By.xpath;
+import static org.openqa.selenium.By.id;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -51,16 +52,19 @@ public class EventsPage extends BaltBetPage<EventsPage>{
 	
 	public void parseHtml(){
 		for (JsoupEventsTable table: getEventsTableList()){
-			System.out.println(table.getEventsTitle());
+			System.out.println(table.getTitle());
 		}
 	}
 	
 	public List<JsoupEventsTable> getEventsTableList(){
 		List<JsoupEventsTable> list = new ArrayList<JsoupEventsTable>();
-		Document document = Jsoup.parse(driver.findElement(xpath("id('livediv')")).getAttribute("innerHTML"));
-		Iterator<Element> elements = document.getElementsByTag("table").iterator();
+		Document document = Jsoup.parse(driver.findElement(id("livediv")).getAttribute("innerHTML"));
+		Iterator<Element> elements = document.children().first().children().get(1).children().iterator();
 		while (elements.hasNext()){
-			list.add(new JsoupEventsTable(elements.next()));
+			Element element = elements.next();
+			if (element.nodeName().equals("table")){
+				list.add(new JsoupEventsTable(elements.next()));
+			}
 		}
 		return list;
 	}
