@@ -1,20 +1,11 @@
 package parser.imp.baltbet.pages;
 
 import static org.openqa.selenium.By.xpath;
-import static org.openqa.selenium.By.id;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.xalan.templates.ElemApplyImport;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.nodes.Node;
-import org.jsoup.parser.Parser;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
@@ -23,7 +14,6 @@ import org.openqa.selenium.WebElement;
 import parser.core.web.elements.Text;
 import parser.imp.baltbet.elements.EventsTable;
 import parser.imp.baltbet.elements.EventsTableRow;
-import parser.imp.baltbet.jsoup.JsoupEventsTable;
 
 public class EventsPage extends BaltBetPage<EventsPage>{
 	
@@ -36,6 +26,7 @@ public class EventsPage extends BaltBetPage<EventsPage>{
 
 	@Override
 	public boolean isAvailable() {
+		sleep(3000);
 		return getEventsTitleElement().getText().equals("Предстоящие события: " + this.categoryName);
 	}
 	
@@ -44,29 +35,10 @@ public class EventsPage extends BaltBetPage<EventsPage>{
 		try {
 			return super.waitUntilAvailable();
 		} catch (TimeoutException e){
-			driver.navigate().refresh();
+			refresh();
 			clickCategoryLink(categoryName);
 			return waitUntilAvailable();
 		}
-	}
-	
-	public void parseHtml(){
-		for (JsoupEventsTable table: getEventsTableList()){
-			System.out.println(table.getTitle());
-		}
-	}
-	
-	public List<JsoupEventsTable> getEventsTableList(){
-		List<JsoupEventsTable> list = new ArrayList<JsoupEventsTable>();
-		Document document = Jsoup.parse(driver.findElement(id("livediv")).getAttribute("innerHTML"));
-		Iterator<Element> elements = document.children().first().children().get(1).children().iterator();
-		while (elements.hasNext()){
-			Element element = elements.next();
-			if (element.nodeName().equals("table")){
-				list.add(new JsoupEventsTable(elements.next()));
-			}
-		}
-		return list;
 	}
 	
 	public void printEventTables(){
@@ -74,7 +46,7 @@ public class EventsPage extends BaltBetPage<EventsPage>{
 		    String name = entry.getKey();
 		    EventsTable table = entry.getValue();
 		    System.out.println("===========================================================================================");
-		    System.out.println("EVENTS TABLE: " + name);
+		    System.out.println(name);
 		    System.out.println("===========================================================================================");
 		    for (EventsTableRow row: table.getEventRows()){
 		    	row.printCells();
@@ -88,7 +60,7 @@ public class EventsPage extends BaltBetPage<EventsPage>{
 		List<WebElement> tableElements = driver.findElements(xpath("id('livediv')/table"));
 		try {
 			for (WebElement element: tableElements){
-				EventsTable table = new EventsTable(driver, element, categoryName);
+				EventsTable table = new EventsTable(driver, element);
 				map.put(table.getTableName(), table);
 			}
 		} catch (StaleElementReferenceException e){

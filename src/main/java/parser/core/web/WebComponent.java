@@ -1,5 +1,8 @@
 package parser.core.web;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
@@ -10,6 +13,7 @@ public abstract class WebComponent<T extends WebComponent<T>> extends Component<
 
 	protected final By findByMethod;
 	protected final WebElement cachedWebElement;
+	private Element parsedContetns = null;
 	
 	public WebComponent(WebDriver driver, By findByMethod) {
 		super(driver);
@@ -52,6 +56,18 @@ public abstract class WebComponent<T extends WebComponent<T>> extends Component<
 	
 	public String getAttribute(String attributeName){
 		return getWebElement().getAttribute(attributeName);
+	}
+	
+	protected Element getParsedContents(){
+		if (parsedContetns == null){
+			Document document = Jsoup.parse(html());
+			parsedContetns = document.getElementsByTag("body").first().child(0);
+		}
+		return parsedContetns;
+	}
+	
+	protected String html(){
+		return getWebElement().getAttribute("outerHTML");
 	}
 	
 	protected WebElement getWebElement() {

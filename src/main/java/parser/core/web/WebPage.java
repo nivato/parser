@@ -25,4 +25,9 @@ public abstract class WebPage<T extends WebPage<T>> extends Component<T>{
         return page;
     }
 	
+	public T refresh(){
+		driver.navigate().refresh();
+		return (T) this;
+	}
+	
 }
